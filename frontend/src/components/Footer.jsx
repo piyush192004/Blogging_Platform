@@ -8,10 +8,13 @@ const Footer = () => {
         <div>
           <div className="text-xl font-semibold">Blogger's Heaven</div>
           <p className="w-full ">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sapiente,
-            magni ipsa harum repellat a sunt libero aliquam, nisi deleniti
-            repellendus nihil placeat. Similique, labore aperiam omnis alias
-            sunt at porro!
+            At Blogger’s Heaven, our mission is to make publishing simple,
+            accessible, and rewarding. We offer seamless publishing tools,
+            customizable templates, and comprehensive analytics, helping
+            bloggers craft engaging content and reach wider audiences. Whether
+            you’re writing personal stories, expert guides, or trend insights,
+            Blogger’s Heaven gives you everything you need to turn your voice
+            into influence.
           </p>
         </div>
         {/*-------Center Side------- */}

@@ -1,26 +1,48 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Make sure you import Link
+import { Link } from "react-router-dom";
+
+// Array now includes a hoverBg property for each category.
+const cat = [
+  {
+    name: "DSA",
+    to: "/cat/dsa",
+    bg: "bg-green-200",
+    hoverBg: "hover:bg-green-400",
+  },
+  {
+    name: "MERN Stack",
+    to: "/cat/mern-stack",
+    bg: "bg-pink-200",
+    hoverBg: "hover:bg-pink-400",
+  },
+  {
+    name: "Next JS",
+    to: "/cat/next-js",
+    bg: "bg-indigo-200",
+    hoverBg: "hover:bg-indigo-400",
+  },
+  {
+    name: "Trending Topics",
+    to: "/cat/trending-topics",
+    bg: "bg-zinc-200",
+    hoverBg: "hover:bg-zinc-400",
+  },
+];
 
 const Categories = () => {
-  const cat = [
-    { name: "DSA", to: "/cat/dsa" },
-    { name: "MERN Stack", to: "/cat/dsa" },
-    { name: "Next JS", to: "/cat/next-js" },
-    { name: "Ruby", to: "/cat/ruby" },
-    { name: "Trending Topics", to: "/cat/trending-topics" },
-  ];
-
   return (
-    <div>
+    <div className="mb-4 py-4">
       <h1 className="text-xl font-semibold mb-4">Categories</h1>
-      <div className="flex items-center justify-start">
-        {cat.map((items, i) => {
-          return (
-            <Link className="me-4 px-4 py-2 text-2xl" key={i} to={items.to}>
-              {items.name}
-            </Link>
-          );
-        })}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {cat.map((items, i) => (
+          <Link
+            className={`px-4 py-2 text-center text-normal md:text-xl font-semibold ${items.bg} ${items.hoverBg} transition-all duration-300 rounded`}
+            key={i}
+            to={items.to}
+          >
+            {items.name}
+          </Link>
+        ))}
       </div>
     </div>
   );
