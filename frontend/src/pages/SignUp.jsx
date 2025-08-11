@@ -1,6 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 const SignUp = () => {
+  const history = useNavigate();
   const [Inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -10,6 +13,27 @@ const SignUp = () => {
   const change = (e) => {
     const { name, value } = e.target;
     setInputs({ ...Inputs, [name]: value });
+  };
+
+  const SubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/sign-up",
+        Inputs,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      history("/login");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    } finally {
+      setInputs({
+        username: "",
+        email: "",
+        password: "",
+      });
+    }
   };
 
   return (
@@ -24,6 +48,7 @@ const SignUp = () => {
         </div>
         <form
           action=""
+          onSubmit={SubmitHandler}
           className="flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 mt-5"
         >
           <div className="flex flex-col mb-4">

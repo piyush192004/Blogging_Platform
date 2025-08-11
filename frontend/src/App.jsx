@@ -19,10 +19,11 @@ import AdminDashboardProfile from "./components/AdminDashboardProfile.jsx";
 import AddBlogs from "./components/AddBlogs.jsx";
 import EditBlogs from "./components/EditBlogs.jsx";
 import UpdateBlogs from "./components/UpdateBlogs.jsx";
-
+import { ToastContainer } from "react-toastify";
 const App = () => {
   return (
-    <BrowserRouter>
+    <>
+      <ToastContainer />
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Homepage />} />
@@ -52,7 +53,7 @@ const App = () => {
           </Route>
         </Route>
       </Routes>
-    </BrowserRouter>
+    </>
   );
 };
 

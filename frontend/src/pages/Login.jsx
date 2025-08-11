@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Login = () => {
+  const backendLink = useSelector((state) => state.prod.link);
+  const history = useNavigate();
   const [Inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -10,6 +15,24 @@ const Login = () => {
   const change = (e) => {
     const { name, value } = e.target;
     setInputs({ ...Inputs, [name]: value });
+  };
+
+  const SubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post(`${backendLink}/api/v1/login`, Inputs, {
+        withCredentials: true,
+      });
+      toast.success(res.data.message);
+      history("/");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    } finally {
+      setInputs({
+        username: "",
+        password: "",
+      });
+    }
   };
 
   return (
@@ -24,6 +47,7 @@ const Login = () => {
         </div>
         <form
           action=""
+          onSubmit={SubmitHandler}
           className="flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 mt-5"
         >
           <div className="flex flex-col mb-4">

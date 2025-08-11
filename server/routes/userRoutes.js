@@ -1,9 +1,11 @@
-const router = require("express").Router();
-const userController = require("../controller/userController");
+const express = require("express");
+const router = express.Router();
+const userController = require("../controller/userController"); // adjusted plural
 
-//api for sign-up
+// API for sign-up
 router.post("/sign-up", userController.userSignup);
 
-//api for login
+// API for login
 router.post("/login", userController.userLogin);
+
 module.exports = router;
