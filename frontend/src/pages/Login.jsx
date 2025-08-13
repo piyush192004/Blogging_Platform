@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../store/auth";
 const Login = () => {
   const backendLink = useSelector((state) => state.prod.link);
   const history = useNavigate();
+
+  const dispatch = useDispatch();
   const [Inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -23,6 +25,7 @@ const Login = () => {
       const res = await axios.post(`${backendLink}/api/v1/login`, Inputs, {
         withCredentials: true,
       });
+      dispatch(authActions.login());
       toast.success(res.data.message);
       history("/");
     } catch (error) {

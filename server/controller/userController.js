@@ -82,3 +82,16 @@ exports.userLogin = async (req, res) => {
       .json({ success: false, error: "Internal Server Error" });
   }
 };
+
+//API to check Cookie
+exports.checkCookie = (req, res) => {
+  try {
+    const token = req.cookies.blogsapplogin;
+    if (token) {
+      return res.status(200).json({ message: true });
+    }
+    return res.status(400).json({ message: false });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};

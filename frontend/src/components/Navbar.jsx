@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi"; // Import icons
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const links = [
@@ -10,6 +11,13 @@ const Navbar = () => {
     { name: "Login", to: "/login" },
   ];
 
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  if (!isLoggedIn) {
+    links.splice(2, 1);
+  } else {
+    links.splice(3, 1);
+  }
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -30,12 +38,14 @@ const Navbar = () => {
             {item.name}
           </Link>
         ))}
-        <Link
-          className="ms-4 bg-black rounded px-4 py-1 text-zinc-100 hover:bg-blue-600 transition-all duration-300"
-          to="/signup"
-        >
-          Sign Up
-        </Link>
+        {!isLoggedIn && (
+          <Link
+            className="ms-4 bg-black rounded px-4 py-1 text-zinc-100 hover:bg-blue-600 transition-all duration-300"
+            to="/signup"
+          >
+            Sign Up
+          </Link>
+        )}
       </div>
       {/* Hamburger on mobile, using react-icons */}
       <button
@@ -65,13 +75,15 @@ const Navbar = () => {
             {item.name}
           </Link>
         ))}
-        <Link
-          to="/signup"
-          className="bg-black rounded px-4 py-2 text-zinc-100 hover:bg-blue-600"
-          onClick={() => setIsOpen(false)}
-        >
-          Sign Up
-        </Link>
+        {!isLoggedIn && (
+          <Link
+            to="/signup"
+            className="bg-black rounded px-4 py-2 text-zinc-100 hover:bg-blue-600"
+            onClick={() => setIsOpen(false)}
+          >
+            Sign Up
+          </Link>
+        )}
       </div>
     </nav>
   );

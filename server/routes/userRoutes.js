@@ -8,4 +8,6 @@ router.post("/sign-up", userController.userSignup);
 // API for login
 router.post("/login", userController.userLogin);
 
+//API for check cookie
+router.get("/check-cookie", userController.checkCookie);
 module.exports = router;
