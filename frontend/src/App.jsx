@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Homepage from "./pages/Homepage.jsx";
 import MainLayout from "./Layout/MainLayout.jsx";
@@ -20,7 +20,24 @@ import AddBlogs from "./components/AddBlogs.jsx";
 import EditBlogs from "./components/EditBlogs.jsx";
 import UpdateBlogs from "./components/UpdateBlogs.jsx";
 import { ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { authActions } from "./store/auth.js";
+
 const App = () => {
+  const backendLink = useSelector((state) => state.prod.link);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get(`${backendLink}/api/v1/check-cookie`, {
+        withCredentials: true,
+      });
+      if (res.data.message === true) {
+        dispatch(authActions.login());
+      }
+    };
+    fetch();
+  });
   return (
     <>
       <ToastContainer />

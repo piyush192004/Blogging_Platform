@@ -95,3 +95,48 @@ exports.checkCookie = (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+//Logout API
+exports.logout = (req, res) => {
+  res.clearCookie("blogsapplogin", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  });
+  res.json({ message: "Logout Successfully" });
+};
+
+//Get Profile Data
+exports.getProfileData = async (req, res) => {
+  try {
+    const { user } = req;
+    const { password, ...safeUserData } = user._doc;
+    console.log(safeUserData);
+    res.status(200).json({ data: safeUserData });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+//Change Password
+exports.changeUserPassword = async (req, res) => {
+  try {
+    const { user } = req;
+    const { password, newPass, confirmNewPass } = req.body;
+    if (!newPass || !confirmNewPass) {
+      return res.status(400).json({ message: "Password didn't match" });
+    }
+    const Actualpassword = user.password;
+    const checkPass = await bcrypt(Actualpassword, password);
+    if (!checkPass) {
+      return res
+        .status(400)
+        .json({ success: false, error: "Password Invalid" });
+    }
+    user.password = await bcrypt.hash(confirmNewPass, 10);
+    await user.save();
+    res.status(200).json({ message: "Password Updated Succesfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};

@@ -1,9 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { authActions } from "../store/auth";
 
 const Sidebar = () => {
+  const backendLink = useSelector((state) => state.prod.link);
+  const history = useNavigate();
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-
+  const logoutHandler = async () => {
+    await axios.post(`${backendLink}/api/v1/logout`, {
+      withCredentials: true,
+    });
+    dispatch(authActions.logout);
+    history("/login");
+  };
   const SidebarLinks = [
     { name: "Dashboard", to: "/profile" },
     { name: "Favourites", to: "/profile/fav" },
@@ -39,7 +51,10 @@ const Sidebar = () => {
             {items.name}
           </Link>
         ))}
-        <button className="bg-zinc-700 text-white rounded py-2 px-6 w-full sm:w-auto mt-2 hover:bg-black transition-all duration-300">
+        <button
+          onClick={logoutHandler}
+          className="bg-zinc-700 text-white rounded py-2 px-6 w-full sm:w-auto mt-2 hover:bg-black transition-all duration-300"
+        >
           Logout
         </button>
       </nav>
