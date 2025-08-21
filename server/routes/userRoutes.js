@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controller/userController");
 const authMiddleware = require("../middlewares/authMiddleware");
-
+const upload = require("../middlewares/imageUpload");
 // API for sign-up
 router.post("/sign-up", userController.userSignup);
 
@@ -30,4 +30,14 @@ router.patch(
   authMiddleware.authorizeRole("user"),
   userController.changeUserPassword
 );
+
+//changeAvatar
+router.put(
+  "/changeAvatar",
+  authMiddleware.verifyToken,
+  authMiddleware.authorizeRole("user"),
+  upload.single("image"),
+  userController.changeAvatar
+);
+
 module.exports = router;

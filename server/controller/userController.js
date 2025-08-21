@@ -121,22 +121,56 @@ exports.getProfileData = async (req, res) => {
 //Change Password
 exports.changeUserPassword = async (req, res) => {
   try {
-    const { user } = req;
+    const { user } = req; // Assuming `user` is added from middleware (e.g. auth)
     const { password, newPass, confirmNewPass } = req.body;
-    if (!newPass || !confirmNewPass) {
-      return res.status(400).json({ message: "Password didn't match" });
+
+    // Check for missing fields
+    if (!password || !newPass || !confirmNewPass) {
+      return res.status(400).json({
+        success: false,
+        message: "All password fields are required",
+      });
     }
-    const Actualpassword = user.password;
-    const checkPass = await bcrypt(Actualpassword, password);
-    if (!checkPass) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Password Invalid" });
+
+    // Verify old password
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).json({
+        success: false,
+        message: "Old password is incorrect",
+      });
     }
-    user.password = await bcrypt.hash(confirmNewPass, 10);
+
+    // Check if new passwords match
+    if (newPass !== confirmNewPass) {
+      return res.status(400).json({
+        success: false,
+        message: "New passwords do not match",
+      });
+    }
+
+    // Hash new password
+    user.password = await bcrypt.hash(newPass, 10);
     await user.save();
-    res.status(200).json({ message: "Password Updated Succesfully" });
+
+    return res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
   } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+//Change Avatar
+exports.changeAvatar = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log(error);
+    return res.status(401).json({ message: "Internal Server Error" });
   }
 };

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { FaUser } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const DashboardProfile = () => {
   const backendLink = useSelector((state) => state.prod.link);
@@ -37,6 +38,21 @@ const DashboardProfile = () => {
 
   const handleButtonClick = () => {
     fileInputRef.current.click();
+  };
+
+  const handlePass = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.patch(
+        `${backendLink}/api/v1/changeUserPassword`,
+        Passwords,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+      setPasswords({ password: "", newPass: "", confirmNewPass: "" });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -97,7 +113,7 @@ const DashboardProfile = () => {
             <h1 className="text-lg md:text-2xl font-semibold">
               Change Account's Password
             </h1>
-            <form className="my-4 w-full">
+            <form className="my-4 w-full" onSubmit={handlePass}>
               <div className="flex flex-col mb-4">
                 <label htmlFor="curPass">Current Password</label>
                 <input
@@ -136,7 +152,7 @@ const DashboardProfile = () => {
               </div>
               <div className="mt-8">
                 <button
-                  type="button"
+                  type="submit"
                   className="bg-indigo-500 text-white hover:bg-indigo-700 px-4 py-2 rounded"
                 >
                   Update Password
