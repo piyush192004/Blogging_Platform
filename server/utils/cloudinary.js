@@ -1,6 +1,7 @@
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
+require("dotenv").config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -11,15 +12,12 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "uploads",
     format: async (req, file) => {
-      const ext = path.extname(file.originalname).slice(1).toLowerCase();
-      if (["jpg", "jpeg", "png"].includes(ext)) {
-        return ext;
-      }
-      return "jpg";
+      const fileType = file.mimetype.split("/")[1];
+      return ["jpeg", "png", "jpg"].includes(fileType) ? fileType : "png";
     },
-    public_id: (req, file) => file.originalname.split(".")[0],
+    public_id: (req, file) =>
+      `${Date.now()}-${file.originalname.split(".")[0]}`,
   },
 });
 

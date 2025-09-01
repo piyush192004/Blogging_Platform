@@ -169,6 +169,13 @@ exports.changeUserPassword = async (req, res) => {
 //Change Avatar
 exports.changeAvatar = async (req, res) => {
   try {
+    const { user } = req;
+    if (!req.file) {
+      return res.status(400).json({ message: "No Image file uploaded" });
+    }
+    user.avatar = req.file.path;
+    await user.save();
+    return res.status(200).json({ message: "Avatar Updated Successfully" });
   } catch (error) {
     console.log(error);
     return res.status(401).json({ message: "Internal Server Error" });

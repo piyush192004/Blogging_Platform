@@ -16,7 +16,7 @@ const DashboardProfile = () => {
     };
     fetch();
   }, []);
-
+  console.log(userData);
   const [Passwords, setPasswords] = useState({
     password: "",
     newPass: "",
@@ -36,8 +36,19 @@ const DashboardProfile = () => {
     }
   };
 
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
+  const updateAvatar = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("image", changeAvatar);
+      const res = await axios.put(
+        `${backendLink}/api/v1/changeAvatar`,
+        formData,
+        { withCredentials: true }
+      );
+      toast.success(res.data.message);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Avatar update failed.");
+    }
   };
 
   const handlePass = async (e) => {
@@ -50,6 +61,7 @@ const DashboardProfile = () => {
       );
       toast.success(res.data.message);
       setPasswords({ password: "", newPass: "", confirmNewPass: "" });
+      setChangeAvatar(null);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -68,9 +80,13 @@ const DashboardProfile = () => {
                   className="w-full h-full flex items-center justify-center cursor-pointer"
                   htmlFor="imgFile"
                 >
-                  {changeAvatar ? (
+                  {userData && userData.avatar ? (
                     <img
-                      src={URL.createObjectURL(changeAvatar)}
+                      src={
+                        changeAvatar
+                          ? URL.createObjectURL(changeAvatar)
+                          : `${userData.avatar}`
+                      }
                       alt="Avatar"
                       className="w-full h-full object-cover rounded-full"
                     />
@@ -90,7 +106,7 @@ const DashboardProfile = () => {
               <button
                 type="button"
                 className="bg-indigo-500 text-white hover:bg-indigo-700 px-4 py-2 rounded mt-4 text-sm md:text-base"
-                onClick={handleButtonClick}
+                onClick={updateAvatar}
               >
                 Change Avatar
               </button>

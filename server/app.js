@@ -5,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 require("./connection/connection");
 const userApi = require("./routes/userRoutes");
+const adminApi = require("./routes/adminRoutes");
 
 // Middleware
 app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
@@ -13,6 +14,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/v1", userApi);
+app.use("/api/v1", adminApi);
 
 // Server
 app.listen(process.env.PORT, () => {

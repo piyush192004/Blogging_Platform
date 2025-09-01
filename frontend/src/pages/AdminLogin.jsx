@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
+  const history = useNavigate();
+  const backendLink = useSelector((state) => state.prod.link);
   const [inputs, setInputs] = useState({
     username: "",
     password: "",
@@ -12,11 +17,17 @@ const AdminLogin = () => {
     setInputs({ ...inputs, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleAdminLogin = async (e) => {
     e.preventDefault();
-    // TODO: Add login/authentication logic here
-    // Example: call your API with inputs.username and inputs.password
-    // Clear the form or redirect as needed
+    try {
+      const res = await axios.post(`${backendLink}/api/v1/adminLogin`, inputs, {
+        withCredentials: true,
+      });
+      toast.success(res.data.message);
+      history("/admin-dashboard");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
   };
 
   return (
@@ -30,7 +41,7 @@ const AdminLogin = () => {
         </div>
         <form
           className="flex flex-col w-full sm:w-3/4 md:w-2/3 lg:w-1/2 mt-5"
-          onSubmit={handleSubmit}
+          onSubmit={handleAdminLogin}
         >
           <div className="flex flex-col mb-4">
             <label htmlFor="username">Username</label>
