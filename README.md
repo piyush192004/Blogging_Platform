@@ -86,16 +86,19 @@ This Blogging Platform is designed to let authors write, publish and manage bl
 > Place screenshot images in a `screenshots/` folder and reference them here.
 
 ### 🔹 Home / Blog Listing  
-![Home Page](screenshots/home.png)
+<img width="1905" height="945" alt="image" src="https://github.com/user-attachments/assets/54fcd084-fbf8-4f73-9351-4f1ecf094d3b" />
+
 
 ### 🔹 Blog Post View  
-![Post View](screenshots/post-view.png)
+<img width="1905" height="945" alt="image" src="https://github.com/user-attachments/assets/96fb81b4-1f2b-4543-9979-fafda32315d7" />
+
 
 ### 🔹 Author Dashboard / Post Management  
-![Dashboard](screenshots/dashboard.png)
+<img width="1904" height="947" alt="image" src="https://github.com/user-attachments/assets/8d88a102-a252-400c-8ef4-ae50ab44f300" />
+
 
 ### 🔹 Responsive Mobile View  
-![Mobile View](screenshots/mobile.png)
+<img width="430" height="540" alt="image" src="https://github.com/user-attachments/assets/a852111a-ef72-483d-a5cf-ae66f75b10f2" />
 
 ---
 
